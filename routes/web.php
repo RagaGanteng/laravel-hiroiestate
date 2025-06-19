@@ -31,6 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('agents', AgentController::class);
     Route::resource('users', UserController::class);
 
+    //role
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::resource('users', UserController::class);
+    });
+    Route::middleware(['auth', 'role:agent'])->group(function () {
+        Route::resource('agents', AgentController::class);
+    });
+
     Route::resource('transactions', PropertyTransactionController::class);
     Route::get('transactions/export', [TransactionExportController::class, 'form'])->name('transactions.export.form');
     Route::get('transactions/export/excel', [TransactionExportController::class, 'exportExcel'])->name('transactions.export.excel');

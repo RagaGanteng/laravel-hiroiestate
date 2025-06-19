@@ -20,21 +20,29 @@
                         {{ __('Property Types') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities')">
-                        {{ __('Facilities') }}
-                    </x-nav-link>
-
-                    <x-nav-link :href="route('agents.index')" :active="request()->routeIs('agents')">
-                        {{ __('Agents') }}
-                    </x-nav-link>
+                    @if(Auth::user()->role !== 'user' || Auth::user()->role === 'developer')
+                        <x-nav-link :href="route('agents.index')" :active="request()->routeIs('agents.*')">
+                            Agents
+                        </x-nav-link>
+                        <x-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
+                            Facilities
+                        </x-nav-link>
+                    @endif
 
                     <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions')">
                         {{ __('Transaction') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('user')">
-                        {{ __('User') }}
-                    </x-nav-link>
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'developer')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            Users
+                        </x-nav-link>
+                    @endif
+                    @if(Auth::user()->role === 'developer')
+                        <x-nav-link :href="route('developer.settings')" :active="request()->routeIs('developer.settings')">
+                            Developer Panel
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

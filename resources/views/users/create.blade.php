@@ -39,6 +39,7 @@
         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
         <option value="agent" {{ old('role') == 'agent' ? 'selected' : '' }}>Agent</option>
         <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
+        <option value="developer" {{ old('role') == 'developer' ? 'selected' : '' }}>developer</option>
       </select>
     </div>
 
