@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserExportController;
 use App\Http\Controllers\PropertyTransactionController;
 use App\Http\Controllers\TransactionExportController;
+use App\Http\Controllers\DeveloperController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,10 +33,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
 
     //role
-    Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::middleware(['auth', 'role:admin,developer'])->group(function () {
         Route::resource('users', UserController::class);
     });
-    Route::middleware(['auth', 'role:agent'])->group(function () {
+    Route::middleware(['auth', 'role:agent,admin,developer'])->group(function () {
         Route::resource('agents', AgentController::class);
     });
 
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::get('transactions/export/pdf', [TransactionExportController::class, 'exportPDF'])->name('transactions.export.pdf');
     Route::get('/users/export/excel', [UserExportController::class, 'exportExcel'])->name('users.export.excel');
     Route::get('/users/export/pdf', [UserExportController::class, 'exportPDF'])->name('users.export.pdf');
+    Route::get('/developer/settings', [DeveloperController::class, 'settings'])->name('developer.settings');
+    Route::post('/developer/reset', [DeveloperController::class, 'reset'])->name('developer.reset');
+
 
 });
 

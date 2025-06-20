@@ -33,11 +33,12 @@
                         {{ __('Transaction') }}
                     </x-nav-link>
 
-                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'developer')
+                    @if(in_array(Auth::user()->role, ['admin', 'developer']))
                         <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                             Users
                         </x-nav-link>
                     @endif
+
                     @if(Auth::user()->role === 'developer')
                         <x-nav-link :href="route('developer.settings')" :active="request()->routeIs('developer.settings')">
                             Developer Panel

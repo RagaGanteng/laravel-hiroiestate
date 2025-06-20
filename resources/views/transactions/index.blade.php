@@ -5,7 +5,11 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1 class="text-3xl font-bold text-teal-700">HiroiEstate Transactions</h1>
-            <p class="text-sm text-gray-500">List of all property transactions</p>
+            <p class="text-sm text-gray-500 mb-5">List of all property transactions</p>
+            <a href="{{ route('transactions.create') }}"
+                class="text-blue-600 hover:underline font-semibold">
+                + New Transaction
+            </a>
         </div>
     </div>
 
@@ -50,16 +54,12 @@
                     <div class="mt-4 flex justify-between text-sm">
                         <a href="{{ route('transactions.edit', $tx->id) }}"
                            class="text-blue-600 hover:underline font-semibold">✏️ Edit</a>
-                        <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST"
-                              onsubmit="return confirm('Are you sure to delete this transaction?')">
+                        <form action="{{ route('transactions.destroy', $tx->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline font-semibold">🗑️ Delete</button>
+                            <button type="submit" class="text-red-600 hover:underline">Delete</button>
                         </form>
-						<a href="{{ route('transactions.create') }}"
-               			class="text-blue-600 hover:underline font-semibold">
-                			+ New Transaction
-            			</a>
+
                     </div>
                 </div>
             @endforeach

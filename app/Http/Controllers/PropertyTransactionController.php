@@ -94,8 +94,14 @@ class PropertyTransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PropertyTransaction $propertyTransaction)
+    public function destroy($id)
     {
-        //
+        $transaction = PropertyTransaction::findOrFail($id);
+        $transaction->delete();
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction deleted successfully!');
     }
+
+
 }
