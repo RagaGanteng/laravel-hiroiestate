@@ -47,14 +47,16 @@
             <input type="email" name="customer_email" id="customer_email" class="w-full p-2 border rounded" required>
         </div>
 
-        <div class="mb-4">
-            <label for="status" class="block font-semibold">Status</label>
-            <select name="status" id="status" class="w-full mt-1 p-2 border rounded" required>
-                <option value="pending">Pending</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-            </select>
-        </div>
+        @unless(Auth::user()->role === 'user')
+            <div class="mb-4">
+                <label for="status" class="block font-semibold">Status</label>
+                <select name="status" class="w-full p-2 border rounded">
+                    <option value="pending" {{ $transaction->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="completed" {{ $transaction->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="cancelled" {{ $transaction->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                </select>
+            </div>
+        @endunless
 
         <div class="mb-4">
             <label for="date" class="block font-semibold">Transaction Date</label>

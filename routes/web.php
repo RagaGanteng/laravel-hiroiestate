@@ -36,9 +36,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['auth', 'role:admin,developer'])->group(function () {
         Route::resource('users', UserController::class);
     });
-    Route::middleware(['auth', 'role:agent,admin,developer'])->group(function () {
+    Route::middleware(['auth', 'role:agent,admin,developer,user'])->group(function () {
         Route::resource('agents', AgentController::class);
+        Route::resource('property_types', PropertyTypeController::class);
     });
+
+    Route::middleware(['auth', 'role:admin,agent,user,developer'])->group(function () {
+        Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
+        Route::get('/property_types', [PropertyTypeController::class, 'index'])->name('property_types.index');
+    });
+
 
     Route::resource('transactions', PropertyTransactionController::class);
     Route::get('transactions/export', [TransactionExportController::class, 'form'])->name('transactions.export.form');

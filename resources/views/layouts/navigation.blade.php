@@ -20,10 +20,11 @@
                         {{ __('Property Types') }}
                     </x-nav-link>
 
-                    @if(Auth::user()->role !== 'user' || Auth::user()->role === 'developer')
-                        <x-nav-link :href="route('agents.index')" :active="request()->routeIs('agents.*')">
-                            Agents
-                        </x-nav-link>
+                    <x-nav-link :href="route('agents.index')" :active="request()->routeIs('agents.*')">
+                        Agents
+                    </x-nav-link>
+
+                    @if(Auth::user()->role !== 'user')
                         <x-nav-link :href="route('facilities.index')" :active="request()->routeIs('facilities.*')">
                             Facilities
                         </x-nav-link>

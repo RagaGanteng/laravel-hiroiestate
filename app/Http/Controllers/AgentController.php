@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class AgentController extends Controller
 {
@@ -15,8 +17,12 @@ class AgentController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role === 'user') {
+            abort(403); // hanya user biasa yang diblok
+        }
         return view('agents.create');
     }
+
 
     public function store(Request $request)
     {
@@ -45,6 +51,9 @@ class AgentController extends Controller
 
     public function edit(Agent $agent)
     {
+        if (Auth::user()->role === 'user') {
+            abort(403); // hanya user biasa yang diblok
+        }
         return view('agents.edit', compact('agent'));
     }
 

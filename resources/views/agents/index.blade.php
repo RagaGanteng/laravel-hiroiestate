@@ -4,9 +4,11 @@
 <div class="p-6">
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold">Agent Directory</h2>
-    <a href="{{ route('agents.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-      + Add Agent
-    </a>
+    @auth
+      @if(in_array(Auth::user()->role, ['admin', 'agent', 'developer']))
+          <a href="{{ route('agents.create') }}" class="btn btn-primary">+ Add New</a>
+      @endif
+    @endauth
   </div>
 
   @if(session('success'))
@@ -31,13 +33,18 @@
         <p class="text-sm text-gray-500 mt-2 line-clamp-3">{{ $agent->bio }}</p>
 
         <div class="flex justify-between items-center mt-4">
-          <a href="{{ route('agents.edit', $agent->id) }}"
-             class="text-sm text-blue-600 hover:underline">Edit</a>
-          <form action="{{ route('agents.destroy', $agent->id) }}" method="POST" onsubmit="return confirm('Delete this agent?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="text-sm text-red-600 hover:underline">Delete</button>
-          </form>
+          @auth
+            @if(Auth::user()->role !== 'user')
+                <a href="{{ route('agents.edit', $agent->id) }}"
+                  class="text-sm text-blue-600 hover:underline">Edit</a>
+
+                <form action="{{ route('agents.destroy', $agent->id) }}" method="POST" onsubmit="return confirm('Delete this agent?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-sm text-red-600 hover:underline">Delete</button>
+                </form>
+            @endif
+          @endauth
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ use App\Models\PropertyTransaction;
 use Illuminate\Http\Request;
 use App\Models\PropertyType;
 use App\Models\Agent;
+use Illuminate\Support\Facades\Auth;
 
 
 class PropertyTransactionController extends Controller
@@ -25,6 +26,7 @@ class PropertyTransactionController extends Controller
      */
     public function create()
     {
+
         $types = PropertyType::all();
         $agents = Agent::all();
         return view('transactions.create', compact('types', 'agents'));
@@ -35,7 +37,10 @@ class PropertyTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        if (Auth::user()->role === 'user') {
+            $request->request->remove('status');
+        }
+        $validated = $request->validate([
             'property_type_id' => 'required|exists:property_types,id',
             'agent_id' => 'required|exists:agents,id',
             'customer_name' => 'required|string',
@@ -45,7 +50,7 @@ class PropertyTransactionController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        PropertyTransaction::create($request->all());
+        PropertyTransaction::create($validated);
 
         return redirect()->route('transactions.index')->with('success', 'Transaction created successfully!');
     }
@@ -75,6 +80,7 @@ class PropertyTransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $request->validate([
             'property_type_id' => 'required|exists:property_types,id',
             'agent_id' => 'required|exists:agents,id',

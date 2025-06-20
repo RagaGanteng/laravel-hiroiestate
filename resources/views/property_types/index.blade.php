@@ -4,7 +4,14 @@
 <div class="p-6">
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold">Property Types</h2>
-    <a href="{{ route('property-types.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">+ Add New</a>
+    @auth
+      @if(Auth::user()->role !== 'user')
+          <a href="{{ route('property_types.create') }}"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+            + Add New
+          </a>
+      @endif
+    @endauth
   </div>
 
   <div>
@@ -28,11 +35,20 @@
           <td class="p-3">{{ $type->is_residential ? 'Yes' : 'No' }}</td>
           <td class="p-3">{{ $type->average_size ?? '-' }}</td>
           <td class="p-3 space-x-2">
-            <a href="{{ route('property-types.edit', $type->id) }}" class="text-blue-500 hover:underline">Edit</a>
-            <form action="{{ route('property-types.destroy', $type->id) }}" method="POST" class="inline">
-              @csrf @method('DELETE')
-              <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Delete this property type?')">Delete</button>
-            </form>
+            @auth
+              @if(Auth::user()->role !== 'user')
+                  <a href="{{ route('property_types.edit', $type->id) }}"
+                    class="text-blue-600 hover:underline text-sm">Edit</a>
+
+                  <form action="{{ route('property_types.destroy', $type->id) }}" method="POST" class="inline"
+                        onsubmit="return confirm('Delete this type?')">
+                      @csrf
+                      @method('DELETE')
+                      <button class="text-red-600 hover:underline text-sm" type="submit">Delete</button>
+                  </form>
+              @endif
+          @endauth
+
           </td>
         </tr>
         @empty
